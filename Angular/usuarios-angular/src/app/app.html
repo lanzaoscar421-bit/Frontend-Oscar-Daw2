@@ -1,0 +1,30 @@
+<div class="container my-3">
+
+    <header>
+        <h1 class="bg-secondary text-white text-center py-3">
+            App Series Fetch
+        </h1>
+        <hr>
+    </header>
+    <div class="main">
+
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Insertar nuevo Usuario
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <app-usuarios-form></app-usuarios-form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <app-usuarios-list></app-usuarios-list>
+    </div>
+</div>

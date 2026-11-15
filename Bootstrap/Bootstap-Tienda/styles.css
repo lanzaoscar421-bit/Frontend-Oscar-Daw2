@@ -1,0 +1,131 @@
+
+.navbar{
+
+    border-bottom: 1px solid #e0e0e0;
+    padding: 24px 40px;
+}
+
+.btn-navbar {
+    color: #222222;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.navbar-title {
+    color: #000000;
+    margin: 0 0 0 20px;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+}
+.header-con{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+.offer-label {
+    color: #fc0000;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.product-title{
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.price{
+    color: #000000;
+    font-size: 24px;
+    font-weight: bold;
+}
+.btn-compra {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.carrito {
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.productos {
+    flex: 1;
+}
+
+
+.cabecera,
+.fila {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1fr;
+    align-items: center;
+}
+
+.cabecera {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.fila {
+    padding: 20px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.fila h3 {
+    margin: 0 0 5px;
+}
+
+
+.cantidad {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cantidad button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.cantidad input {
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+
+.resumen {
+    width: 300px;
+    padding: 20px;
+    background-color: #fafafa;
+    align-self: flex-start;
+}
+
+.resumen p {
+    display: flex;
+    justify-content: space-between;
+}

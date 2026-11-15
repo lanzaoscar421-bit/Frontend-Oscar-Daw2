@@ -1,0 +1,13 @@
+<div class="row">
+
+
+    @for (usuario of usuariosArray; track usuario.id) {
+
+        <article class="col-12 col-md-6 col-sm-3">
+
+        
+            <app-usuarios-card [miUsuario]="usuario"> </app-usuarios-card>
+        
+        </article>
+    }
+</div>
