@@ -1,0 +1,113 @@
+<section class="container">
+    <h1>Formulario con validaciones</h1>
+    <hr>
+
+    <form [formGroup]="validacionesForm" class="card p-3 shadow" (ngSubmit)="getDataForm()">
+
+        <div class="my-2">
+            <label for="nombre" class="form-label mt-lg-3">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Introduce el nombre" formControlName="nombre">
+            @if (checkControl('nombre','required')) { <div class="text-danger">El nombre es obligatorio</div> }
+            @if (checkControl('nombre','minlength')) { <div class="text-danger">Mínimo 3 caracteres</div> }
+            @if (checkControl('nombre','maxlength')) { <div class="text-danger">Máximo 20 caracteres</div> }
+        </div>
+
+        <div class="my-2">
+            <label for="username" class="form-label mt-lg-3">Usuario</label>
+            <input type="text" class="form-control" name="username" id="username" placeholder="Introduce el usuario" formControlName="username">
+            @if (checkControl('username','required')) { <div class="text-danger">El usuario es obligatorio</div> }
+            @if (checkControl('username','sinEspacios')) { <div class="text-danger">No puede tener espacios</div> }
+            @if (validacionesForm.get('username')?.pending) { <div class="text-muted">Comprobando...</div> }
+            @if (checkControl('username','usernameOcupado')) { <div class="text-danger">Ese usuario ya existe</div> }
+        </div>
+
+        <div class="my-2">
+            <label for="email" class="form-label mt-lg-3">Email</label>
+            <input type="email" class="form-control" name="email" id="email" placeholder="Introduce el email" formControlName="email">
+            @if (checkControl('email','required')) { <div class="text-danger">El email es obligatorio</div> }
+            @if (checkControl('email','email')) { <div class="text-danger">Formato de email no válido</div> }
+        </div>
+
+        <div class="my-2">
+            <label for="edad" class="form-label mt-lg-3">Edad</label>
+            <input type="number" class="form-control" name="edad" id="edad" placeholder="Introduce la edad" formControlName="edad">
+            @if (checkControl('edad','required')) { <div class="text-danger">La edad es obligatoria</div> }
+            @if (checkControl('edad','min')) { <div class="text-danger">Debes ser mayor de edad</div> }
+            @if (checkControl('edad','max')) { <div class="text-danger">Edad máxima: 100</div> }
+        </div>
+
+        <div class="my-2">
+            <label for="dni" class="form-label mt-lg-3">DNI</label>
+            <input type="text" class="form-control" name="dni" id="dni" placeholder="Introduce el DNI" formControlName="dni">
+            @if (checkControl('dni','required')) { <div class="text-danger">El DNI es obligatorio</div> }
+            @if (checkControl('dni','pattern')) { <div class="text-danger">Formato: 8 números y una letra</div> }
+        </div>
+
+        <div class="my-2">
+            <label for="telefono" class="form-label mt-lg-3">Teléfono</label>
+            <input type="text" class="form-control" name="telefono" id="telefono" placeholder="Introduce el teléfono" formControlName="telefono">
+            @if (checkControl('telefono','required')) { <div class="text-danger">El teléfono es obligatorio</div> }
+            @if (checkControl('telefono','pattern')) { <div class="text-danger">9 cifras, empezando por 6-9</div> }
+        </div>
+
+        <div class="my-2">
+            <label for="web" class="form-label mt-lg-3">Web (opcional)</label>
+            <input type="text" class="form-control" name="web" id="web" placeholder="Introduce la web" formControlName="web">
+            @if (checkControl('web','pattern')) { <div class="text-danger">Debe empezar por http:// o https://</div> }
+        </div>
+
+        <div class="my-2">
+            <label for="fecha" class="form-label mt-lg-3">Fecha</label>
+            <input type="date" class="form-control" name="fecha" id="fecha" formControlName="fecha">
+            @if (checkControl('fecha','required')) { <div class="text-danger">La fecha es obligatoria</div> }
+            @if (checkControl('fecha','fechaFutura')) { <div class="text-danger">No puede ser futura</div> }
+        </div>
+
+        <div class="my-2">
+            <label for="categoria" class="form-label mt-lg-3">Categoría</label>
+            <select class="form-select" name="categoria" id="categoria" formControlName="categoria">
+                <option value="">Selecciona...</option>
+                <option value="a">Opción A</option>
+                <option value="b">Opción B</option>
+            </select>
+            @if (checkControl('categoria','required')) { <div class="text-danger">Selecciona una categoría</div> }
+        </div>
+
+        <div class="my-2">
+            <label class="form-label mt-lg-3 d-block">Género</label>
+            <input type="radio" formControlName="genero" value="hombre"> Hombre
+            <input type="radio" formControlName="genero" value="mujer" class="ms-3"> Mujer
+            @if (checkControl('genero','required')) { <div class="text-danger">Selecciona una opción</div> }
+        </div>
+
+        <div class="my-2">
+            <label for="comentario" class="form-label mt-lg-3">Comentario</label>
+            <textarea class="form-control" name="comentario" id="comentario" placeholder="Introduce un comentario" formControlName="comentario"></textarea>
+            @if (checkControl('comentario','maxlength')) { <div class="text-danger">Máximo 200 caracteres</div> }
+        </div>
+
+        <div class="my-2">
+            <label for="password" class="form-label mt-lg-3">Contraseña</label>
+            <input type="password" class="form-control" name="password" id="password" placeholder="Introduce la contraseña" formControlName="password">
+            @if (checkControl('password','required')) { <div class="text-danger">La contraseña es obligatoria</div> }
+            @if (checkControl('password','pattern')) { <div class="text-danger">Mínimo 8 caracteres, con mayúscula, minúscula y número</div> }
+        </div>
+
+        <div class="my-2">
+            <label for="repeat" class="form-label mt-lg-3">Repetir contraseña</label>
+            <input type="password" class="form-control" name="repeat" id="repeat" placeholder="Repite la contraseña" formControlName="repeat">
+            @if (validacionesForm.hasError('noCoinciden') && validacionesForm.get('repeat')?.touched) {
+                <div class="text-danger">Las contraseñas no coinciden</div>
+            }
+        </div>
+
+        <div class="form-check my-3">
+            <input type="checkbox" class="form-check-input" name="terminos" id="terminos" formControlName="terminos">
+            <label class="form-check-label" for="terminos">Acepto los términos</label>
+            @if (checkControl('terminos','required')) { <div class="text-danger">Debes aceptar los términos</div> }
+        </div>
+
+        <input type="submit" value="Guardar" class="btn btn-success mt-5" [disabled]="!validacionesForm.valid">
+
+    </form>
+</section>
