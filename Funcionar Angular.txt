@@ -35,3 +35,109 @@ Para crear componentes
 	ng g c components/componente-hijo2 [--type=components] --skip-tests
 	
 
+
+
+
+
+-------------
+
+1. Servicio: usuarios-services.ts
+
+Aquí solo va el signal que guarda el usuario a editar y el signal de la lista.
+
+ts
+export class UsuariosServices {
+
+    private arrUsuarios = signal<Iusuario[]>([]);       // ← lista como signal (necesario para el filtro)
+    usuarioToEdit = signal<Iusuario | null>(null);      // ← la "caja" del usuario a editar
+
+    // ...getAllUsuarios, addUsuario, deleteUsuarioByName, updateUsuario
+}
+2. Card: usuarios-card.components.ts
+
+Aquí se rellena la caja al pulsar Editar. No lleva effect ni filtro.
+
+ts
+export class UsuariosCardComponents {
+
+  @Input() miUsuario !: Iusuario;
+  usuariosServices = inject(UsuariosServices);
+
+  updateUsuario(miUsuario: Iusuario) {
+    this.usuariosServices.usuarioToEdit.set(miUsuario);   // ← mete el usuario en la caja
+  }
+}
+3. Formulario: usuarios-form.components.ts
+
+Aquí van el effect, el getter y checkControl.
+
+ts
+export class UsuariosFormComponents {
+
+  usuariosForm: FormGroup;
+  usuariosServices = inject(UsuariosServices);
+
+  // GETTER: va como propiedad de la clase, fuera del constructor
+  get email() { return this.usuariosForm.get('email'); }
+
+  constructor() {
+    this.usuariosForm = new FormGroup({
+      id: new FormControl(null),                       // ← imprescindible para editar
+      first_name: new FormControl('', Validators.required),
+      // ...resto de campos
+    });
+
+    // EFFECT: va dentro del constructor, después de crear el FormGroup
+    effect(() => {
+      const usuario = this.usuariosServices.usuarioToEdit();   // ← con ()
+      if (usuario) {
+        this.usuariosForm.patchValue(usuario);
+      }
+    });
+  }
+
+  // CHECKCONTROL: método de la clase, fuera del constructor
+  checkControl(controlName: string, validator: string): boolean {
+    const control = this.usuariosForm.get(controlName);
+    return !!control?.hasError(validator) && !!control?.touched;
+  }
+
+  getDataForm() {
+    // ...decide entre updateUsuario y addUsuario según el id
+    this.usuariosServices.usuarioToEdit.set(null);   // ← limpia la caja al guardar
+    this.usuariosForm.reset();
+  }
+}
+
+El effect va dentro del constructor porque necesita estar en un contexto de inyección. El getter y checkControl van fuera, a nivel de clase.
+
+4. Lista: usuarios-list.components.ts
+
+Aquí va el filtro de búsqueda. Es la única clase que lo lleva.
+
+ts
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+
+export class UsuariosListComponents {
+
+  usuariosServices = inject(UsuariosServices);
+
+  texto = signal('');                       // ← lo que se escribe en el buscador
+
+  filtrados = computed(() =>                // ← la lista ya filtrada
+    this.usuariosServices.getAllUsuarios().filter(u =>
+      (u.first_name + ' ' + u.last_name).toLowerCase().includes(this.texto().toLowerCase())
+    )
+  );
+}
+5. HTML de cada uno
+
+usuarios-list.components.html (buscador y cartas):
+
+html
+<input type="text" class="form-control my-3" placeholder="Buscar..."
+       (input)="texto.set($any($event.target).value)">
+
+@for (usuario of filtrados(); track usuario.id) {
+  <app-usuarios-card [miUsuario]="usuario" />
+}
